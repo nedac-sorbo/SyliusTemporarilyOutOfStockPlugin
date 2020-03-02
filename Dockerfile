@@ -110,7 +110,7 @@ COPY docker/nodejs-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
 ENTRYPOINT ["docker-entrypoint"]
-CMD ["yarn", "watch"]
+CMD ["yarn", "--cwd=/srv/sylius/tests/Application", "watch"]
 
 FROM nginx:${NGINX_VERSION}-alpine AS sylius_temporarily_out_of_stock_plugin_nginx
 

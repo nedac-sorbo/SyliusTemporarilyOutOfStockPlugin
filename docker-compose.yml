@@ -7,8 +7,8 @@ services:
       target: sylius_temporarily_out_of_stock_plugin_php
     image: nedac/sylius_temporarily_out_of_stock_plugin_php:latest
     environment:
-      - APP_ENV=test
-      - DATABASE_URL=mysql://sylius:barcodes@127.0.0.1:3306/sylius_barcodes
+      - APP_ENV=dev
+      - DATABASE_URL=mysql://sylius:temporarily_out_of_stock@127.0.0.1:3306/sylius_temporarily_out_of_stock
     volumes:
       - .:/srv/sylius
     network_mode: host
@@ -17,9 +17,9 @@ services:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=sylius_barcodes
+      - MYSQL_DATABASE=sylius_temporarily_out_of_stock
       - MYSQL_USER=sylius
-      - MYSQL_PASSWORD=barcodes
+      - MYSQL_PASSWORD=temporarily_out_of_stock
     ports:
       - "3306:3306"
     network_mode: host
@@ -42,8 +42,6 @@ services:
     image: nedac/sylius_temporarily_out_of_stock_plugin_nodejs:latest
     environment:
       - GULP_ENV=dev
-      - PHP_HOST=127.0.0.1
-      - PHP_PORT=9000
     volumes:
       - .:/srv/sylius
     network_mode: host

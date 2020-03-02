@@ -38,7 +38,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Nesac\\SyliusTemporarilyOutOfStockPlugin\\": "src/",
+            "Nedac\\SyliusTemporarilyOutOfStockPlugin\\": "src/",
             "Tests\\Nedac\\SyliusTemporarilyOutOfStockPlugin\\": "tests/"
         }
     },
