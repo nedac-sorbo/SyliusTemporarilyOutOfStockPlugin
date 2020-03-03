@@ -7,7 +7,7 @@ services:
       target: sylius_temporarily_out_of_stock_plugin_php
     image: nedac/sylius_temporarily_out_of_stock_plugin_php:latest
     environment:
-      - APP_ENV=dev
+      - APP_ENV=test
       - DATABASE_URL=mysql://sylius:temporarily_out_of_stock@127.0.0.1:3306/sylius_temporarily_out_of_stock
     volumes:
       - .:/srv/sylius
