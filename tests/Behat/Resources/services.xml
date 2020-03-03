@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <defaults public="true" />
-        <!-- Put your Behat services here -->
+
+        <service id="nedac.sylius_temporarily_out_of_stock_plugin.behat.page.product_index"
+                 class="Tests\Nedac\SyliusTemporarilyOutOfStockPlugin\Behat\Page\Shop\ProductIndexPage"
+                 parent="sylius.behat.symfony_page"
+                 public="false" />
+
+        <service id="nedac.sylius_temporarily_out_of_stock_plugin.behat.page.product_show"
+                 class="Tests\Nedac\SyliusTemporarilyOutOfStockPlugin\Behat\Page\Shop\ProductShowPage"
+                 parent="sylius.behat.symfony_page"
+                 public="false" />
+
+        <service id="nedac.sylius_temporarily_out_of_stock_plugin.behat.context.product"
+                 class="Tests\Nedac\SyliusTemporarilyOutOfStockPlugin\Behat\Context\Ui\Shop\ProductContext">
+            <argument type="service" id="nedac.sylius_temporarily_out_of_stock_plugin.behat.page.product_index" />
+            <argument type="service" id="nedac.sylius_temporarily_out_of_stock_plugin.behat.page.product_show" />
+        </service>
     </services>
 </container>
