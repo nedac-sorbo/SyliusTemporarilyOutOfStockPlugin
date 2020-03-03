@@ -9,7 +9,7 @@ use Tests\Nedac\SyliusTemporarilyOutOfStockPlugin\Behat\Page\Shop\ProductIndexPa
 use Tests\Nedac\SyliusTemporarilyOutOfStockPlugin\Behat\Page\Shop\ProductShowPageInterface;
 use Webmozart\Assert\Assert;
 
-final class ProductContext Implements Context
+final class ProductContext implements Context
 {
     private ProductIndexPageInterface $indexPage;
     private ProductShowPageInterface $showPage;
