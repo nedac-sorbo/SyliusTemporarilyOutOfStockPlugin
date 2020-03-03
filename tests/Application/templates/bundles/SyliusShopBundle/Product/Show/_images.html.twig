@@ -12,7 +12,7 @@
 {% endif %}
 
 <div data-product-image="{{ path }}" data-product-link="{{ original_path }}"></div>
-<div class="ui fluid image" data-lightbox="sylius-product-image">
+<div class="ui fluid image" data-lightbox="sylius-product-image" id="nedac-out-of-stock-product-image">
     {% if not nedac_inventory_is_available(product.variants) %}
         <a class="ui large ribbon label" id="nedac-out-of-stock-ribbon">
             {{ 'nedac.ui.temporarily_out_of_stock'|trans }}
