@@ -14,6 +14,9 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
     <tr><td>1.6</td></tr>
 </table>
 
+
+> **_NOTE:_** This plugin will run on PHP 7.4
+
 #### Installation:
 
 1. Install using composer:
