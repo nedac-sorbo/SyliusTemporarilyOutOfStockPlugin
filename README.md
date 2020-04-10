@@ -9,6 +9,11 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
 ![Product Card](product_card.png)
 ![Product Detail](product_detail.png)
 
+##### Supported Sylius versions:
+<table>
+    <tr><td>1.6</td></tr>
+</table>
+
 #### Installation:
 
 1. Install using composer:
