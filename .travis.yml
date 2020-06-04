@@ -26,7 +26,8 @@ before_install:
   - phpenv config-rm xdebug.ini
   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - mkdir -p "${SYLIUS_CACHE_DIR}"
-
+  - >
+    ([[ ! -z "$SYLIUS_VERSION" ]] && [[ "1.6" == "$SYLIUS_VERSION" ]] && composer require "sylius/sylius:>=1.6.8 <1.7.0" --no-update && (cd tests/Application && git checkout 1.6)) || true
 install:
   - composer install --no-interaction --prefer-dist
   - (cd tests/Application && yarn install)
@@ -69,9 +70,8 @@ jobs:
   include:
     - name: Sylius 1.7
     - name: Sylius 1.6
-      before_install:
-        - composer require "sylius/sylius:>=1.6.8 <1.7.0" --no-update
-        - (cd tests/Application && git checkout 1.6)
+      env:
+        - SYLIUS_VERSION="1.6"
 
 script:
   - composer validate
