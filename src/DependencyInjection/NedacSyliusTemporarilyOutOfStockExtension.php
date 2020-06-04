@@ -12,7 +12,9 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 final class NedacSyliusTemporarilyOutOfStockExtension extends Extension
 {
     /**
-     * {@inheritdoc}
+     * @param array<string, mixed> $config
+     * @param ContainerBuilder $container
+     * @throws \Exception
      */
     public function load(array $config, ContainerBuilder $container): void
     {
