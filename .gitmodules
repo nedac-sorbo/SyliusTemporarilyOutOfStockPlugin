@@ -1,0 +1,3 @@
+[submodule "tests/Application"]
+	path = tests/Application
+	url = git@github.com:nedac-sorbo/SyliusTemporarilyOutOfStockPluginTestApplication.git
