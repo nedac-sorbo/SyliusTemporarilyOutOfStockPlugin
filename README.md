@@ -194,7 +194,7 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
 
 That's it, just four easy steps!
 
-If all went well you've overridden `_images.html.twig`, `_box.html.twig` **OR**
+If all went well you've overridden `_images.html.twig`, and either `_box.html.twig` **OR**
 `_content.html.twig`, depending on the Sylius version. **Not both.**
 
 #### Setup development environment:
