@@ -118,19 +118,23 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
     {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
 
     <div class="ui fluid card" {{ sylius_test_html_attribute('product') }}>
-        {% if not nedac_inventory_is_available(product.variants) %}
-            <a class="ui ribbon label nedac-out-of-stock-plugin-card-ribbon">{{ 'nedac.ui.temporarily_out_of_stock'|trans }}</a>
-        {% endif %}
-        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" class="blurring dimmable image">
+        <div class="blurring dimmable image">
             <div class="ui dimmer">
                 <div class="content">
                     <div class="center">
-                        <div class="ui inverted button">{{ 'sylius.ui.view_more'|trans }}</div>
+                        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}">
+                            <div class="ui inverted button">{{ 'sylius.ui.view_more'|trans }}</div>
+                        </a>
                     </div>
                 </div>
             </div>
-            {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product} %}
-        </a>
+            <div class="ui fluid image">
+                {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product} %}
+                {% if not isInventoryAvailable %}
+                    <div class="ui ribbon label nedac-out-of-stock-plugin-card-ribbon">{{ 'nedac.ui.temporarily_out_of_stock'|trans }}</div>
+                {% endif %}
+            </div>
+        </div>
         <div class="content" {{ sylius_test_html_attribute('product-content') }}>
             <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" class="header sylius-product-name" {{ sylius_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a>
             {% if not product.variants.empty() %}
