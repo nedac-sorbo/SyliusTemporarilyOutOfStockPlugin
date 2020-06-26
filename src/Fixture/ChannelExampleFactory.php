@@ -9,6 +9,10 @@ use Sylius\Component\Core\Model\ChannelInterface;
 
 final class ChannelExampleFactory extends BaseChannelExampleFactory
 {
+    /**
+     * @param array<string, mixed> $options
+     * @return ChannelInterface
+     */
     public function create(array $options = []): ChannelInterface
     {
         $channel = parent::create($options);
