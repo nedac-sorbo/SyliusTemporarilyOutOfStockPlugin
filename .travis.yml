@@ -65,10 +65,7 @@ before_script:
 
 jobs:
   include:
-    - name: Sylius 1.7
-    - name: Sylius 1.6
-      env:
-        - SYLIUS_VERSION="1.6"
+    - name: Sylius 1.7 Bootstrap Theme
 
 script:
   - composer validate
