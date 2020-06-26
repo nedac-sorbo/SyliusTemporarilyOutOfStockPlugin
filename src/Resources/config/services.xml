@@ -13,5 +13,13 @@
             <argument type="service" id="Nedac\SyliusTemporarilyOutOfStockPlugin\Inventory\Checker\AvailabilityCheckerInterface" />
             <tag name="twig.extension" />
         </service>
+        <service id="sylius.fixture.example_factory.channel"
+                 class="Nedac\SyliusTemporarilyOutOfStockPlugin\Fixture\ChannelExampleFactory"
+                 public="true">
+            <argument key="$localeRepository" type="service" id="sylius.repository.locale" />
+            <argument key="$channelFactory" type="service" id="sylius.factory.channel" />
+            <argument key="$currencyRepository" type="service" id="sylius.repository.currency" />
+            <argument key="$zoneRepository" type="service" id="sylius.repository.zone" />
+        </service>
     </services>
 </container>
