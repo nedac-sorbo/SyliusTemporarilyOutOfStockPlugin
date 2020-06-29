@@ -10,18 +10,17 @@ abstract class AbstractProductPage extends SymfonyPage
 {
     public function productCardHasRibbonWithText(string $productName, string $ribbonText): bool
     {
-        $cards = $this->getDocument()->findAll('css', '.ui.fluid.card');
-        foreach ($cards as $card) {
-            $header = $card->find('css', '.header.sylius-product-name');
-            if (null !== $header && $header->getText() === $productName) {
-                $ribbon = $card->find('css', '.ui.ribbon.label');
-                if (null !== $ribbon && $ribbon->getText() === $ribbonText) {
-                    return true;
-                }
-            }
-        }
+        $ribbonElement = $this->getDocument()->find(
+            'xpath',
+            sprintf(
+                "descendant::*[@data-test-product-name = '%s']/" .
+                "ancestor::*[@data-test-product]/" .
+                "descendant::*[@data-test-product-out-of-stock]",
+                $productName
+            )
+        );
 
-        return false;
+        return null !== $ribbonElement && $ribbonElement->getText() === $ribbonText;
     }
 
     public function productCardDoesNotHaveRibbonWithText(string $productName, string $ribbonText): bool
