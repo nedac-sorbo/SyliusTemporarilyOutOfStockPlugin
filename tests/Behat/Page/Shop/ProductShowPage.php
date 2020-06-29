@@ -8,15 +8,13 @@ final class ProductShowPage extends AbstractProductPage implements ProductShowPa
 {
     public function isRibbonDisplayed(string $ribbonText): bool
     {
-        $imageDiv = $this->getDocument()->find('css', '#nedac-out-of-stock-product-image');
-        if (null !== $imageDiv) {
-            $ribbon = $imageDiv->find('css', '#nedac-out-of-stock-ribbon');
-            if (null !== $ribbon && $ribbon->getText() === $ribbonText) {
-                return true;
-            }
-        }
+        $ribbonElement = $this->getDocument()->find(
+            'xpath',
+            "descendant::*[@data-product-image]/" .
+            "descendant::*[@data-test-product-out-of-stock]"
+        );
 
-        return false;
+        return null !== $ribbonElement && $ribbonElement->getText() === $ribbonText;
     }
 
     public function getRouteName(): string
