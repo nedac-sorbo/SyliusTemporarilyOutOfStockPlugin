@@ -37,7 +37,7 @@ before_install:
   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - mkdir -p "${SYLIUS_CACHE_DIR}"
   - >
-    ([[ ! -z "$SYLIUS_VERSION" ]] && [[ "1.6" == "$SYLIUS_VERSION" ]] && composer require "sylius/sylius:>=1.6.8 <1.7.0" --no-update && (cd tests/Application && git checkout 1.6)) || true
+    ([[ ! -z "$TEST_APP_VERSION" ]] && [[ "1.6" == "$TEST_APP_VERSION" ]] && composer require "sylius/sylius:>=1.6.8 <1.7.0" --no-update); (cd tests/Application && git checkout $TEST_APP_VERSION);
 install:
   - composer install --no-interaction --prefer-dist
   - (cd tests/Application && yarn install)
@@ -66,13 +66,16 @@ before_script:
 jobs:
   include:
     - name: Sylius 1.7 Bootstrap Theme
+      env:
+        - TEST_APP_VERSION=1.7-bootstrap
 
 script:
   - composer validate
   - vendor/bin/phpcs
   - vendor/bin/phpunit
   - vendor/bin/phpstan analyse -c phpstan.neon -l max src/
-  - ./run-behat-theme-tests.sh
+  - >
+    if [[ -z "$TEST_APP_VERSION" ]] && [[ "1.7-bootstrap" == "$TEST_APP_VERSION"]]; then ./run-behat-theme-tests.sh; else vendor/bin/behat --tags="~@theme&&~@theme_setup" --strict -vvv --no-interaction || vendor/bin/behat --tags="~@theme&&~@theme_setup" --strict -vvv --no-interaction --rerun fi
 
 after_failure:
   - vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "${SYLIUS_BUILD_DIR}/*.log"
