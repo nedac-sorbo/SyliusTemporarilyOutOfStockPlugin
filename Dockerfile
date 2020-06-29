@@ -7,6 +7,7 @@ FROM php:${PHP_VERSION}-fpm-alpine AS sylius_temporarily_out_of_stock_plugin_php
 # persistent / runtime deps
 RUN apk add --no-cache \
                 acl \
+                bash \
                 file \
                 gettext \
                 git \
