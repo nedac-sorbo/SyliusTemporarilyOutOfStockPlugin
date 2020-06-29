@@ -67,7 +67,7 @@ jobs:
   include:
     - name: Sylius 1.7 Bootstrap Theme
       env:
-        - TEST_APP_VERSION=1.7-bootstrap
+        - TEST_APP_VERSION=1.7-bootstrap-theme
 
 script:
   - composer validate
@@ -75,7 +75,7 @@ script:
   - vendor/bin/phpunit
   - vendor/bin/phpstan analyse -c phpstan.neon -l max src/
   - >
-    if [[ -z "$TEST_APP_VERSION" ]] && [[ "1.7-bootstrap" == "$TEST_APP_VERSION"]]; then ./run-behat-theme-tests.sh; else vendor/bin/behat --tags="~@theme&&~@theme_setup" --strict -vvv --no-interaction || vendor/bin/behat --tags="~@theme&&~@theme_setup" --strict -vvv --no-interaction --rerun fi
+    if [[ -z "$TEST_APP_VERSION" ]] && [[ "1.7-bootstrap-theme" == "$TEST_APP_VERSION"]]; then ./run-behat-theme-tests.sh; else vendor/bin/behat --tags="~@theme&&~@theme_setup" --strict -vvv --no-interaction || vendor/bin/behat --tags="~@theme&&~@theme_setup" --strict -vvv --no-interaction --rerun fi
 
 after_failure:
   - vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "${SYLIUS_BUILD_DIR}/*.log"
