@@ -4,8 +4,6 @@ os: linux
 
 dist: bionic
 
-sudo: true
-
 addons:
   apt:
     sources:
@@ -47,7 +45,7 @@ before_script:
   - (cd tests/Application && bin/console doctrine:schema:create -vvv)
   - (cd tests/Application && bin/console assets:install public -vvv)
   - (cd tests/Application && bin/console cache:warmup -vvv)
-  - (cd tests/Application && yarn encore prod)
+  - ([[ ! -z "$TEST_APP_VERSION" ]] && [[ "1.6" == "$TEST_APP_VERSION" ]] && (cd tests/Application && yarn encore prod)) || (cd tests/Application && yarn build)
 
   # Downloading Symfony CLI
   - |
@@ -70,7 +68,7 @@ jobs:
         - TEST_APP_VERSION=1.7-bootstrap-theme
     - name: Sylius 1.7
       env:
-        - TEST_APP_VERSION=1.7-webpack
+        - TEST_APP_VERSION=1.7-bootstrap-theme
 
 script:
   - composer validate
