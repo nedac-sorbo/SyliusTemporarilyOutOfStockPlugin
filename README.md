@@ -33,7 +33,7 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
         Nedac\SyliusTemporarilyOutOfStockPlugin\NedacSyliusTemporarilyOutOfStockPlugin::class => ['all' => true],
     ];
     ```
-3. Override templates (on Sylius 1.6, skip to step 4 for Sylius 1.7):
+3. Override templates (on Sylius 1.6, skip to step 4 for Sylius 1.7 or to step 5 when using the bootstrap theme):
     ```twig
     {# templates/bundles/SyliusShopBundle/Product/_box.html.twig #}
     {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
@@ -117,6 +117,8 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
 
     {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
 
+    {% set isInventoryAvailable = nedac_inventory_is_available(product.variants) %}
+
     <div class="ui fluid card" {{ sylius_test_html_attribute('product') }}>
         <div class="blurring dimmable image">
             <div class="ui dimmer">
@@ -191,7 +193,112 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
     {% endif %}
     ```
 
-5. Install assets:
+5. (Beta) If you're using the bootstrap theme on Sylius 1.7:
+    ```twig
+    {# themes/[YOUR_THEME_NAME]/SyliusShopBundle/views/Product/Box/_content.html.twig #}
+
+    {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+    {% set isInventoryAvailable = nedac_inventory_is_available(product.variants) %}
+
+    <div class="card border-0" {{ sylius_test_html_attribute('product') }}>
+        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}">
+            {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product, 'class': 'card-img-top'} %}
+            {% if not isInventoryAvailable %}
+            <div class="card-img-overlay" style="padding-left: 0.75rem; padding-top: 0.75rem">
+                <h5><span class="badge badge-secondary" {{ sylius_test_html_attribute('product-out-of-stock') }}>{{ 'nedac.ui.temporarily_out_of_stock'|trans }}</span></h5>
+            </div>
+            {% endif %}
+        </a>
+        <div class="card-body text-center" {{ sylius_test_html_attribute('product-content') }}>
+            <h6 class="sylius-product-name" {{ sylius_test_html_attribute('product-name', product.name) }}>{{ product.name }}</h6>
+            {% if not product.variants.empty() %}
+                <span class="text-muted sylius-product-price" {{ sylius_test_html_attribute('product-price') }}>
+                    {{ money.calculatePrice(product|sylius_resolve_variant) }} |
+                </span>
+            {% endif %}
+            <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" class="card-link">{{ 'sylius.ui.view_more'|trans }}</a>
+        </div>
+    </div>
+    ```
+    ```twig
+    {# themes/[YOUR_THEME_NAME]/SyliusShopBundle/views/Product/Show/_images.html.twig #}
+
+    {% if product.imagesByType('main') is not empty %}
+        {% set source_path = product.imagesByType('main').first.path %}
+        {% set original_path = source_path|imagine_filter('sylius_shop_product_original') %}
+        {% set path = source_path|imagine_filter(filter|default('sylius_shop_product_large_thumbnail')) %}
+    {% elseif product.images.first %}
+        {% set source_path = product.images.first.path %}
+        {% set original_path = source_path|imagine_filter('sylius_shop_product_original') %}
+        {% set path = source_path|imagine_filter(filter|default('sylius_shop_product_large_thumbnail')) %}
+    {% else %}
+        {% set original_path = '//placehold.it/400x300' %}
+        {% set path = original_path %}
+    {% endif %}
+
+    {% set isInventoryAvailable = nedac_inventory_is_available(product.variants) %}
+
+    <div data-product-image="{{ path }}" data-product-link="{{ original_path }}" style="position: relative; display: inline-block">
+    <a href="{{ original_path }}" class="glightbox" data-js-product-image>
+        {% if not isInventoryAvailable %}
+        <h4 style="position: absolute; left: 25px; top: 15px;"><span class="badge badge-secondary" {{ sylius_test_html_attribute('product-out-of-stock') }}>{{ 'nedac.ui.temporarily_out_of_stock'|trans }}</span></h4>
+        {% endif %}
+        <img class="img-fluid" src="{{ path }}" alt="{{ product.name }}" {{ sylius_test_html_attribute('main-image') }}/>
+    </a>
+    </div>
+    {% if product.images|length > 1 %}
+
+    {{ sylius_template_event('sylius.shop.product.show.before_thumbnails', {'product': product}) }}
+
+    <div class="row mt-3">
+        {% for image in product.images %}
+        {% set path = image.path is not null ? image.path|imagine_filter('sylius_shop_product_small_thumbnail') : '//placehold.it/200x200' %}
+        <div class="col-4" data-js-product-thumbnail>
+        {% if product.isConfigurable() and product.variants|length > 0 %}
+            {% include '@SyliusShop/Product/Show/_imageVariants.html.twig' %}
+        {% endif %}
+            <a href="{{ image.path|imagine_filter('sylius_shop_product_original') }}" class="glightbox">
+                <img class="img-fluid" src="{{ path }}" data-large-thumbnail="{{ image.path|imagine_filter('sylius_shop_product_large_thumbnail') }}" alt="{{ product.name }}" />
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    ```
+
+6. Remove hack from product repository by overriding it:
+    ```php
+    <?php
+
+    # src/Repository/ProductRepository.php
+
+    declare(strict_types=1);
+
+    namespace App\Repository;
+
+    use Nedac\SyliusTemporarilyOutOfStockPlugin\Repository\ProductRepositoryTrait;
+    use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepository;
+
+    final class ProductRepository extends BaseProductRepository {
+       use ProductRepositoryTrait;
+    }
+    ```
+    ```yaml
+    # config/packages/_sylius.yaml
+
+    # ...
+
+    sylius_product:
+        resources:
+            product:
+                classes:
+                    repository: App\Repository\ProductRepository
+
+    # ...
+    ```
+
+7. Install assets:
     ```bash
     bin/console sylius:install:assets
     ```
