@@ -65,10 +65,10 @@ jobs:
   include:
     - name: Sylius 1.7 Bootstrap Theme
       env:
-        - TEST_APP_VERSION=1.7-bootstrap-theme
+        - TEST_APP_VERSION=master
     - name: Sylius 1.7
       env:
-        - TEST_APP_VERSION=1.7-bootstrap-theme
+        - TEST_APP_VERSION=master
     - name: Sylius 1.6
       env:
         - TEST_APP_VERSION=1.6
