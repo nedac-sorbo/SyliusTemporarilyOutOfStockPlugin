@@ -70,7 +70,7 @@ jobs:
         - TEST_APP_VERSION=1.7-bootstrap-theme
     - name: Sylius 1.7
       env:
-        - TEST_APP_VERSION=master
+        - TEST_APP_VERSION=1.7-webpack
 
 script:
   - composer validate
