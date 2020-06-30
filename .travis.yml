@@ -35,7 +35,7 @@ before_install:
   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - mkdir -p "${SYLIUS_CACHE_DIR}"
   - >
-    ([[ ! -z "$TEST_APP_VERSION" ]] && [[ "1.6" == "$TEST_APP_VERSION" ]] && composer require "sylius/sylius:>=1.6.8 <1.7.0" --no-update); (cd tests/Application && git checkout $TEST_APP_VERSION);
+    ([[ ! -z "$TEST_APP_VERSION" ]] && [[ "1.6" == "$TEST_APP_VERSION" ]] && composer require "sylius/sylius:>=1.6.8 <1.7.0" --no-update && composer require sylius/bootstrap-theme:^0.1.2 --no-update); (cd tests/Application && git checkout $TEST_APP_VERSION);
 install:
   - composer install --no-interaction --prefer-dist
   - (cd tests/Application && yarn install)
