@@ -267,7 +267,7 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
     {% endif %}
     ```
 
-6. Remove hack from product repository by overriding it:
+6. Modify hack from product repository by overriding it:
     ```php
     <?php
 
@@ -295,6 +295,17 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
                 classes:
                     repository: App\Repository\ProductRepository
 
+    # ...
+    ```
+    ```yaml
+    # config/packages/doctrine.yaml
+
+    doctrine:
+    # ...
+    orm:
+        dql:
+            string_functions:
+                FIRST: Nedac\SyliusTemporarilyOutOfStockPlugin\Doctrine\Dql\FirstFunction
     # ...
     ```
 
