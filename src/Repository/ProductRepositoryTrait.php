@@ -53,12 +53,22 @@ trait ProductRepositoryTrait
 
         // Grid hack, we do not need to join these if we don't sort by price
         if (isset($sorting['price'])) {
+            $subQuery = $this->createQueryBuilder('m')
+                ->select('v.position')
+                ->innerJoin('m.variants', 'v')
+                ->andWhere('m.id = :product_id')
+                ->orderBy('v.onHand', 'DESC')
+            ;
+
             $queryBuilder
                 ->addSelect('variant')
                 ->addSelect('channelPricing')
                 ->innerJoin('o.variants', 'variant')
                 ->innerJoin('variant.channelPricings', 'channelPricing')
                 ->andWhere('channelPricing.channelCode = :channelCode')
+                ->andWhere('variant.position = FIRST(' .
+                    str_replace(':product_id', 'o.id', $subQuery->getDQL()) .
+                    ')')
                 ->setParameter('channelCode', $channel->getCode())
             ;
         }
