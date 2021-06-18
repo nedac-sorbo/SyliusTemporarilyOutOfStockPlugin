@@ -1,0 +1,29 @@
+{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+{% set is_inventory_available = nedac_inventory_is_available(product.variants) %}
+
+<div class="ui fluid card" {{ sylius_test_html_attribute('product') }}>
+    <div class="blurring dimmable image">
+        <div class="ui dimmer">
+            <div class="content">
+                <div class="center">
+                    <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}">
+                        <div class="ui inverted button">{{ 'sylius.ui.view_more'|trans }}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="ui fluid image">
+            {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product} %}
+            {% if not is_inventory_available %}
+                <div class="ui ribbon label nedac-out-of-stock-plugin-card-ribbon" {{ sylius_test_html_attribute('product-out-of-stock') }}>{{ 'nedac.ui.temporarily_out_of_stock'|trans }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="content" {{ sylius_test_html_attribute('product-content') }}>
+        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" class="header sylius-product-name" {{ sylius_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a>
+        {% if not product.variants.empty() %}
+            <div class="sylius-product-price" {{ sylius_test_html_attribute('product-price') }}>{{ money.calculatePrice(product|sylius_resolve_variant) }}</div>
+        {% endif %}
+    </div>
+</div>
