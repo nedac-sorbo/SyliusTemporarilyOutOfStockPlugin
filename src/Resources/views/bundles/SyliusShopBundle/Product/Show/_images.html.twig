@@ -11,16 +11,17 @@
     {% set path = original_path %}
 {% endif %}
 
-<div data-product-image="{{ path }}" data-product-link="{{ original_path }}"></div>
-<div class="ui fluid image" data-lightbox="sylius-product-image" id="nedac-out-of-stock-product-image">
-    {% if not nedac_inventory_is_available(product.variants) %}
-        <a class="ui large ribbon label" id="nedac-out-of-stock-ribbon" {{ sylius_test_html_attribute('product-out-of-stock') }}>
-            {{ 'nedac.ui.temporarily_out_of_stock'|trans }}
+<div data-product-image="{{ path }}" data-product-link="{{ original_path }}">
+    <div class="ui fluid image" data-lightbox="sylius-product-image" id="nedac-out-of-stock-product-image">
+        {% if not nedac_inventory_is_available(product.variants) %}
+            <a class="ui large ribbon label" id="nedac-out-of-stock-ribbon" {{ sylius_test_html_attribute('product-out-of-stock') }}>
+                {{ 'nedac.ui.temporarily_out_of_stock'|trans }}
+            </a>
+        {% endif %}
+        <a href="{{ original_path }}">
+            <img src="{{ path }}" id="main-image" alt="{{ product.name }}" {{ sylius_test_html_attribute('main-image') }} />
         </a>
-    {% endif %}
-    <a href="{{ original_path }}">
-        <img src="{{ path }}" id="main-image" alt="{{ product.name }}" {{ sylius_test_html_attribute('main-image') }} />
-    </a>
+    </div>
 </div>
 {% if product.images|length > 1 %}
     <div class="ui divider"></div>
