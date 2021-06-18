@@ -14,7 +14,7 @@
 <div data-product-image="{{ path }}" data-product-link="{{ original_path }}"></div>
 <div class="ui fluid image" data-lightbox="sylius-product-image" id="nedac-out-of-stock-product-image">
     {% if not nedac_inventory_is_available(product.variants) %}
-        <a class="ui large ribbon label" id="nedac-out-of-stock-ribbon">
+        <a class="ui large ribbon label" id="nedac-out-of-stock-ribbon" {{ sylius_test_html_attribute('product-out-of-stock') }}>
             {{ 'nedac.ui.temporarily_out_of_stock'|trans }}
         </a>
     {% endif %}

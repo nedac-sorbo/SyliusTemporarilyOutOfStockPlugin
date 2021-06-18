@@ -16,7 +16,7 @@
         <div class="ui fluid image">
             {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product} %}
             {% if not is_inventory_available %}
-                <div class="ui ribbon label nedac-out-of-stock-plugin-card-ribbon">{{ 'nedac.ui.temporarily_out_of_stock'|trans }}</div>
+                <div class="ui ribbon label nedac-out-of-stock-plugin-card-ribbon" {{ sylius_test_html_attribute('product-out-of-stock') }}>{{ 'nedac.ui.temporarily_out_of_stock'|trans }}</div>
             {% endif %}
         </div>
     </div>
