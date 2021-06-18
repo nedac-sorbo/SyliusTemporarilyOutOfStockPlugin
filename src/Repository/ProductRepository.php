@@ -6,6 +6,7 @@ namespace Nedac\SyliusTemporarilyOutOfStockPlugin\Repository;
 
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepository;
 
-final class ProductRepository extends BaseProductRepository {
+final class ProductRepository extends BaseProductRepository
+{
     use ProductRepositoryTrait;
 }
