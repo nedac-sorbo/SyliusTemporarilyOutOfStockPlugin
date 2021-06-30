@@ -116,7 +116,7 @@ RUN set -eux; \
         cat composer.json; \
     fi
 
-ARG PLUGIN_VERSION=^1.0@dev
+ARG PLUGIN_VERSION="^1.0@dev as 1.0.1"
 RUN set -eux; \
     composer install --prefer-dist --no-autoloader --no-scripts --no-progress; \
     composer require nedac/sylius-temporarily-out-of-stock-plugin:"$PLUGIN_VERSION" --no-progress -vvv; \
