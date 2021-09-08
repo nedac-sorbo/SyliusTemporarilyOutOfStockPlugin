@@ -5,7 +5,7 @@ This plugin adds a ribbon clarifying that a product is out of stock to the produ
 
 ##### Supported Sylius versions:
 <table>
-    <tr><td>1.9</td></tr>
+    <tr><td>1.10</td></tr>
 </table>
 
 
